@@ -78,16 +78,17 @@ class BlogApiServiceTest {
         Article a = new Article("제목 1", "내용 1");
         Article b = new Article("제목 2", "내용 2");
         Article c = new Article("제목 3", "내용 3");
-        List<Article> expected = new ArrayList<>(Arrays.asList(a, b, c));
+        List<Article> articles = Arrays.asList(a, b, c);
+        List<Article> savedArticles = blogRepository.saveAll(articles);
 
         //when
         List<Article> result = blogService.findAll();
 
         //then
-        assertEquals(result.size(), expected.size());
+        assertEquals(result.size(), savedArticles.size());
         for (int i = 0; i < result.size(); i++) {
-            assertEquals(result.get(i).getTitle(), expected.get(i).getTitle());
-            assertEquals(result.get(i).getContent(), expected.get(i).getContent());
+            assertEquals(result.get(i).getTitle(), savedArticles.get(i).getTitle());
+            assertEquals(result.get(i).getContent(), savedArticles.get(i).getContent());
         }
     }
 
