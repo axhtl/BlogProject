@@ -15,6 +15,7 @@ public class AddArticleRequest {
 
     @Pattern(regexp = ".{1,199}", message="title은 글자수 200 이상 불가")
     private String title;
+    @Pattern(regexp = ".{1,999}", message="content은 글자수 1000 이상 불가")
     private String content;
 
     @Builder
