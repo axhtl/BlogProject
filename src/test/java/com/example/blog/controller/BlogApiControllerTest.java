@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -79,6 +81,32 @@ class BlogApiControllerTest {
         assertThat(articles.get(0).getContent()).isEqualTo(content);
     }
 
+    @DisplayName("addArticle: title 필드 유효성 검사")
+    @Test
+    public void addArticleRequest_validationTest() throws Exception {
+        //빈 내용을 가진 요청 객체 생성
+        //given
+        AddArticleRequest request = new AddArticleRequest();
+        request.setTitle("");
+        request.setContent("");
+
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/articles")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(request)))
+                //then
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string("title은 글자수 200 이상 불가 "));
+    }
+
+    // 객체를 JSON 문자열로 변환하는 유틸리티 메서드
+    private String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @DisplayName("addArticle: 블로그 글 목록 조회에 성공한다.")
     @Test
