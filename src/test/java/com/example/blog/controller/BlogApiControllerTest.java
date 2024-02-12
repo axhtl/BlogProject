@@ -81,7 +81,7 @@ class BlogApiControllerTest {
         assertThat(articles.get(0).getContent()).isEqualTo(content);
     }
 
-    @DisplayName("addArticle: title 필드 유효성 검사")
+    @DisplayName("addArticle: title과 content 필드 유효성 검사")
     @Test
     public void addArticleRequest_validationTest() throws Exception {
         //빈 내용을 가진 요청 객체 생성
@@ -96,7 +96,7 @@ class BlogApiControllerTest {
                         .content(asJsonString(request)))
                 //then
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string("title은 글자수 200 이상 불가 "));
+                .andExpect(MockMvcResultMatchers.content().string("title은 글자수 200 이상 불가 content은 글자수 1000 이상 불가 "));
     }
 
     // 객체를 JSON 문자열로 변환하는 유틸리티 메서드
