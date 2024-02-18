@@ -4,6 +4,8 @@ import com.example.blog.domain.Article;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.system.CapturedOutput;
+
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,4 +32,12 @@ public class EntityTest {
 
         assertEquals("엔티티 생성 후 10일이 지난 후에는 수정할 수 없습니다.", exception.getMessage());
         }
+
+    @Test
+    @DisplayName("9일후 알림 테스트")
+    public void test_alarm_after9Days(){
+        LocalDateTime createdAt = LocalDateTime.now().minusDays(9);
+        this.article.setCreatedAt(createdAt);
+        this.article.update("Updated Title", "Updated Content");
     }
+}
