@@ -45,5 +45,6 @@ public class Article extends BaseEntity {
         if(daysBetween>=10) {
             throw new RuntimeException("엔티티 생성 후 10일이 지난 후에는 수정할 수 없습니다.");
         }
+        //
     }
 }
