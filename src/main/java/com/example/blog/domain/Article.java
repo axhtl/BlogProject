@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -16,6 +18,9 @@ import java.time.temporal.ChronoUnit;
 @Setter
 @NoArgsConstructor
 @Slf4j
+@Table(name="article")
+@SQLDelete(sql="UPDATE article SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class Article extends BaseEntity {
 
     @Id
@@ -28,6 +33,8 @@ public class Article extends BaseEntity {
 
     @Column(name="content", nullable=false)
     private String content;
+
+    private boolean deleted = false;
 
     @Builder
     public Article(String title, String content){
