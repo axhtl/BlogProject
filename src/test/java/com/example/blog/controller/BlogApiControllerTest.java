@@ -19,6 +19,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -132,7 +134,7 @@ class BlogApiControllerTest {
                 .andExpect(jsonPath("$[0].title").value(title));
     }
 
-    @DisplayName("findArticle: 블로그 글 조회에 성공한다.")
+    @DisplayName("findArticle: 블로그 단일 글 조회에 성공한다.")
     @Test
     public void findArticle() throws Exception{
         //given
@@ -153,6 +155,32 @@ class BlogApiControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.article.content").value(content))
                 .andExpect(jsonPath("$.article.title").value(title));
+    }
+
+    @DisplayName("updatableDays-calculation-Test")
+    @Test
+    public void calculate_UpdatableDays() throws Exception {
+        final String url = "/api/articles/{id}";
+        final String title = "title";
+        final String content = "content";
+
+        Article article = blogRepository.save(Article.builder()
+                .title(title)
+                .content(content)
+                .build());
+        article.setCreatedAt(LocalDateTime.now().minusDays(5)); //지금으로부터 5일 전에 생성되었음
+
+        //when
+        final ResultActions resultActions = mockMvc.perform(get(url, article.getId()));
+
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.article.content").value(content))
+                .andExpect(jsonPath("$.article.title").value(title))
+                .andExpect(jsonPath("$.updatableDays").exists())
+                .andExpect(jsonPath("$.updatableDays").value(5));
+
     }
 
     @DisplayName("deleteArticle: 블로그 글 삭제에 성공한다.")

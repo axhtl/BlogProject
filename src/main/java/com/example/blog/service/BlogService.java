@@ -39,8 +39,8 @@ public class BlogService{
         if(article != null && article.getCreatedAt() != null){
             LocalDate now = LocalDate.now();
             LocalDate created = article.getCreatedAt().toLocalDate();
-            LocalDate updatable = created.plusDays(10);
-            long updatableDays = ChronoUnit.DAYS.between(now, updatable);
+            long updatableDays = 10 - ChronoUnit.DAYS.between(created, now);
+
             return updatableDays;
         }
         return -1;
