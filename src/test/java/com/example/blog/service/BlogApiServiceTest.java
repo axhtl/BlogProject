@@ -1,4 +1,4 @@
-package com.example.blog.controller;
+package com.example.blog.service;
 
 import com.example.blog.domain.Article;
 import com.example.blog.dto.AddArticleRequest;

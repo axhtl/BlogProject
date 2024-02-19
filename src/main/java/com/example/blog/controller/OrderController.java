@@ -21,7 +21,7 @@ public class OrderController {
         return ResponseEntity.ok().body(AllDescending);
     }
 
-    @GetMapping("/api/Ascending")
+    @GetMapping("/api/ascending")
     public ResponseEntity<List<Article>> getAscendingOrder(){
         List<Article> AllAscending = orderService.findAllByOrderByCreatedAtAsc();
         return ResponseEntity.ok().body(AllAscending);
