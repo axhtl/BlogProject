@@ -6,13 +6,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+
+@DataJpaTest
 public class EntityTest {
 
     private Article article;
@@ -47,6 +50,37 @@ public class EntityTest {
         LocalDateTime createdAt = LocalDateTime.now().minusDays(9);
         this.article.setCreatedAt(createdAt);
         this.article.update("Updated Title", "Updated Content");
+    }
+
+    @Test
+    @DisplayName("SoftDelete 테스트")
+    public void test_softDelete(){
+//        blogRepository.save(article);
+//
+//        blogRepository.delete(article);
+//
+//        //데이터 조회시 없어졌는지 확인
+//        Article deletedArticle = blogRepository.findById(article.getId()).orElse(null);
+//        assertNull(deletedArticle);
+//
+//        //DB에는 남아있는지 확인 & deleted 컬럼이 true인지 확인
+
+        //given
+        blogRepository.save(article);
+
+        // when
+        blogRepository.delete(article);
+
+        //then
+        // 삭제된 게시글이 목록에 포함되어 있지 않음을 확인
+        assertFalse(blogRepository.existsById(article.getId()), "Deleted article should not exist in database");
+
+//        // 삭제된 게시글 목록을 조회하여 개수가 1개인지 확인
+//        List<Article> deletedArticles = blogRepository.findDeletedArticles();
+//        assertEquals(1, deletedArticles.size(), "One deleted article should be found");
+//        // 첫 번째 게시글의 deletedAt이 null이 아닌지 확인
+//        Article deletedArticle = deletedArticles.get(0);
+//        assertNotNull(deletedArticle.getDeletedAt(), "Deleted article should have deletedAt timestamp");
     }
 }
 

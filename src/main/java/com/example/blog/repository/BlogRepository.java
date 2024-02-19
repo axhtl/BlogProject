@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface BlogRepository extends JpaRepository<Article, Long> {
 
+    @Query("SELECT a FROM Article a WHERE a.deletedAt IS NOT NULL")
+    List<Article> findDeletedArticles();
+
     List<Article> findAllByOrderByCreatedAtDesc();
 
     List<Article> findAllByOrderByCreatedAtAsc();
