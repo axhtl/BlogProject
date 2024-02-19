@@ -151,8 +151,8 @@ class BlogApiControllerTest {
         //then
         resultActions
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").value(content))
-                .andExpect(jsonPath("$.title").value(title));
+                .andExpect(jsonPath("$.article.content").value(content))
+                .andExpect(jsonPath("$.article.title").value(title));
     }
 
     @DisplayName("deleteArticle: 블로그 글 삭제에 성공한다.")
