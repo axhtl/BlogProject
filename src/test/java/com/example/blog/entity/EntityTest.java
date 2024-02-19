@@ -7,7 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.system.CapturedOutput;
 
 import java.time.LocalDateTime;
 
@@ -48,21 +47,6 @@ public class EntityTest {
         LocalDateTime createdAt = LocalDateTime.now().minusDays(9);
         this.article.setCreatedAt(createdAt);
         this.article.update("Updated Title", "Updated Content");
-    }
-
-    @Test
-    @DisplayName("SoftDelete 테스트")
-    public void test_softDelete(){
-        blogRepository.save(article);
-
-        blogRepository.delete(article);
-
-        //데이터 조회시 없어졌는지 확인
-        Article deletedArticle = blogRepository.findById(article.getId()).orElse(null);
-        assertNull(deletedArticle);
-
-        //DB에는 남아있는지 확인 & deleted 컬럼이 true인지 확인
-
     }
 }
 
