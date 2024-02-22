@@ -16,6 +16,8 @@ import java.time.temporal.ChronoUnit;
 @Setter
 @NoArgsConstructor
 @Slf4j
+@SQLDelete(sql="UPDATE article SET deletedAt = current_timestamp WHERE id = ?")
+@Where(clause = "deletedAt IS NULL")
 public class Article extends BaseEntity {
 
     @Id
