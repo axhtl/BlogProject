@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController // HTTP Response body에 객체 데이터를 JSON 형식으로 반환하는 컨트롤러
 @RequiredArgsConstructor
@@ -56,11 +58,15 @@ public class BlogApiController {
     }
 
     @GetMapping("/api/articles/{id}")
-    public ResponseEntity<ArticleResponse> findArticle(@PathVariable long id){
+    public ResponseEntity<Map<String, Object>> findArticle(@PathVariable long id){
         Article article = blogService.findById(id);
+        Long updatableDays = blogService.calculate_updatableDays(id);
 
-        return ResponseEntity.ok()
-                .body(new ArticleResponse(article));
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("article", article);
+        responseBody.put("updatableDays", updatableDays);
+
+        return ResponseEntity.ok().body(responseBody);
     }
 
     @DeleteMapping("/api/articles/{id}")
